@@ -134,13 +134,16 @@ DEFAULT_NOTE = u'There is nothing to say...'
 2. 用户和组的 **增加** ： addUser 和 addGroup ， 如果增加用户指定了ID则最好保证整个项目中一直都指定ID，而且ID必须是 int 数据。
 3. 用户和组的 **删除** 建议在右键菜单中执行，主要是 removeUserItem 和 removeGroupItem 两个函数，需要输入所在的Item。也可以自己编写一个逻辑来找到用户和组所在的item，具体可以（常见的方法--组根据组名称删除， 用户根据用户ID删除举例）：
 
+
 > a.组item的查找可以直接在 groupDict 中根据组名称返回gitem。
 > b.用户item需要首先根据a调出各组gitem，然后根据gitem中的usrList判断是否存在相同ID的uitem，如果存在则删除之即可。
+
 
 4. 用户和组的 **修改** ：只需要按照3的思路找到用户所在的item，然后调用item的 editInfo 方法即可，编辑完成后输入回车就会保存所编辑的内容，选择其它Item则会放弃修改。其它修改方式自行编写， **建议先删除原来的uit然后重新adduser指定详细信息。**
 5. 用户和组的 **查找** ：参考3的思路，两步操作。
 
-
+项目地址：https://github.com/HeLiangHIT/pyqtChat
+博客地址：http://blog.csdn.net/u010151698/article/details/53585124
 
 
 # 参考网址
