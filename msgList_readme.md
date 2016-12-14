@@ -34,5 +34,6 @@ setStyleSheet(
 2. 文字消息和图像消息的添加调用addTextMsg和addImageMsg即可。删除在界面上操作，查找暂未实现---估计这里也不会实现了。
 3. 添加其它消息类型...等什么时候闲得没妹子约了再说吧...
 
-
+项目地址：https://github.com/HeLiangHIT/pyqtChat
+博客地址：http://blog.csdn.net/u010151698/article/details/53585124
 
