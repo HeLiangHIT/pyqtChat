@@ -1014,5 +1014,46 @@ body .markdown-body
     page-break-after: avoid;
   }
 }
-</style><title>readme</title></head><body><article class="markdown-body"><h1 id="include-groupuserlist_readmemd"><a name="user-content-include-groupuserlist_readmemd" href="#include-groupuserlist_readmemd" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>include &ldquo;groupUserList_readme.md&rdquo;</h1>
-<h1 id="include-gmsglist_readmemd"><a name="user-content-include-gmsglist_readmemd" href="#include-gmsglist_readmemd" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>include &ldquo;gmsgList_readme.md&rdquo;</h1></article></body></html>
+</style><title>msgList_readme</title></head><body><article class="markdown-body"><div class="toc">
+<ul>
+<li><a href="#_1">需求</a></li>
+<li><a href="#_2">实现思路</a></li>
+<li><a href="#msglist">msgList 使用方法</a></li>
+</ul>
+</div>
+<h1 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>需求</h1>
+<ol>
+<li>实现类似PC端微信的聊天消息界面。</li>
+<li>为了学习使用只需要显示图片和文本，支持GIF图像显示，支持消息右键的复制和删除。图片双击可以在expleror中显示。</li>
+<li>消息框需要模拟气泡效果，消息列表需要包含头像。</li>
+</ol>
+<blockquote>
+<p>由于头像控件的操作和消息内容显示控件的操作差不多相似，因此就不再增加头像控件的右键和双击操作了。</p>
+</blockquote>
+<h1 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>实现思路</h1>
+<ol>
+<li>参考<a href="https://github.com/HeLiangHIT/pyqtChat">groupUserList</a>的实现方式，主要是在一个QListWidget上显示多个消息控件，主要区别是：</li>
+<li>消息不需要可以拖放、不需要右键增删改查，只需要列举显示即可，因此这里继承的QListWidget只编写了两个方法就是addImageMsg和addTextMsg，分别实现文本和图像消息的添加。<blockquote>
+<p>由于这里不需要增删改查功能，而只需要右键删除（和复制）因此直接把List实例和创建的QListWidgetItem实例传递保存到TextItem&gt;BubbleText和ImageItem&gt;BubbleImage自定义控件的实例里面&mdash;以便在消息的删除直接在里面调用List和ListItem实现删除<code>self.listView.takeItem(self.listView.indexFromItem(self.listItem).row())</code>。</p>
+</blockquote>
+</li>
+<li>由于QListWidget默认鼠标滑过各个Item或者点击是都会产生不同的UI效果，而消息界面不需要这样的效果故参考<a href="http://blog.csdn.net/taiyang1987912/article/details/40979309">乌托邦大神的博客</a>设置item的样式如下（为了让item不可选在addItem之后将其设置为不可选择状态it.setFlags(Qt.ItemIsEnabled)）：<br />
+<pre><code>setStyleSheet(
+    &quot;QListWidget::item{border:0px solid gray;background-color:transparent;padding:0px;color:transparent}&quot;  
+    &quot;QListView::item:!enabled{background-color:transparent;color:transparent;border:0px solid gray;padding:0px 0px 0px 0px;}&quot;  
+    &quot;QListWidget::item:hover{background-color:transparent;color:transparent;border:0px solid gray;padding:0px 0px 0px 0px;}&quot;  
+    &quot;QListWidget::item:selected{background-color:transparent;color:transparent;border:0px solid gray;padding:0px 0px 0px 0px;}&quot;)
+</code></pre></li>
+<li>在消息和图像显示的自定义控件Item中使用一个QHBoxLayout显示消息，主要就是根据消息的左右来调整不同的添加控件顺序，采用QSpacerItem控制空白区域的自动缩放，该方案主要参考<a href="http://stackoverflow.com/questions/18047427/pyqt-sms-bubble-widget">stackoverflow</a>上的方案。</li>
+<li>绘制气泡消息图像的控件BubbleImage为了支持GIF显示，采用一个QMovie类，将其frameChanged信号连接到自定义槽animate里面通过<code>self.setPixmap(self.movie.currentPixmap())</code>实现图片的动态更新。</li>
+<li><strong>气泡的绘制</strong>主要是限制其绘制区域，使用QPainter的drawPolygon绘制，drawPolygon的输入采用QPolygonF添加气泡的边角点路径，详细实现参考其paintEvent方法。为了保证鼠标在内部和在外部时有不同的颜色（主要是鼠标移入时颜色加深），需要在enterEvent和leaveEvent中设置不同的绘图颜色然后调用update刷新绘图。<blockquote>
+<p>为了让实现显示的图片不会在super(BubbleImage, self).paintEvent(e)时和绘制的背景气泡冲突，设置控件的setContentsMargins绘图范围保证图像的绘图区域。</p>
+</blockquote>
+</li>
+<li><strong>文字的显示</strong>主要是控件的大小调节，起初准备用QTextEdit后来发现实现起来很难控制大小和混动条！只能舍弃次用QLabel继承实现了，关于控件的水平大小采用控制字符数量的方法(ヘ(_ _ヘ))，考虑到一个中文字符的宽度大概是3倍英文字符因此出现了checkContainChinese和splitStringByLen函数（我也不记得哪儿抄来的方法了）。在输入调用super(BubbleText, self).<strong>init</strong>(myText)前就把字符用\n分割好来显示。</li>
+</ol>
+<h1 id="msglist"><a name="user-content-msglist" href="#msglist" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>msgList 使用方法</h1>
+<p><span id="UsingGuide"></span><br />
+1. GroupUserList 控件继承到 QListWidget ，可以当作 QWidget 添加到界面布局，也可以被作为主界面操作。<br />
+2. 文字消息和图像消息的添加调用addTextMsg和addImageMsg即可。删除在界面上操作，查找暂未实现&mdash;估计这里也不会实现了。<br />
+3. 添加其它消息类型&hellip;等什么时候闲得没妹子约了再说吧&hellip;</p></article></body></html>

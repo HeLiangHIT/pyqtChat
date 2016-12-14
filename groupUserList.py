@@ -100,7 +100,7 @@ class LineEdit(QLineEdit):
         if self._readOnly:
             e.ignore() #屏蔽所有鼠标操作
         else:
-            super(LineEdit,self).mouseDoubleClickEvent(e)
+            super(LineEdit,self).mouseMoveEvent(e)
 
 
 class UserItem(QWidget):
