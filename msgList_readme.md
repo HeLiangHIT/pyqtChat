@@ -8,6 +8,9 @@
 
 > 由于头像控件的操作和消息内容显示控件的操作差不多相似，因此就不再增加头像控件的右键和双击操作了。
 
+# 实现效果截图
+![界面操作实例](ref/pic3.gif "界面操作实例") 
+
 
 # 实现思路
 1. 参考[groupUserList](https://github.com/HeLiangHIT/pyqtChat)的实现方式，主要是在一个QListWidget上显示多个消息控件，主要区别是：

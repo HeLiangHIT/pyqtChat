@@ -418,7 +418,6 @@ if __name__=='__main__':
     ml.addTextMsg(u"With a gentle look on her face, she paused and said,她脸上带着温柔的表情，稍稍停顿了一下，便开始讲话",False)
     ml.addImageMsg('ref/bq.gif',True)
     ml.addImageMsg('ref/mt.gif',False)
-    ml.addImageMsg('ref/mz.jpg',True)
     ml.show()
 
     sys.exit(app.exec_())
