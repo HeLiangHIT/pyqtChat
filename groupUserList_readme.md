@@ -137,7 +137,7 @@ b.用户item需要首先根据a调出各组gitem，然后根据gitem中的usrLis
 5. 用户和组的 **查找** ：参考3的思路，两步操作。
 
 项目地址：https://github.com/HeLiangHIT/pyqtChat
-博客地址：http://blog.csdn.net/u010151698/article/details/53585124
+博客地址：http://blog.csdn.net/u010151698
 
 
 
