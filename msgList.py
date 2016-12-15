@@ -22,7 +22,7 @@ def checkContainChinese(s):#判断是否为英文
 def splitStringByLen(text,Len):#其中使用\n分割，因此原来的\n将会被替换，一个中文大致顶三个英文的宽度
     reload(sys) #暂时用
     sys.setdefaultencoding('utf-8')
-    text = text.replace('\n','')
+    text = text.replace('\n','.')
     (myText, nLen) = ('',0)
     for s in text.decode('utf-8',errors = 'ignore'):
         myText += s
@@ -386,7 +386,7 @@ class MsgList(QListWidget):
     def addTextMsg(self,sz = DEFAULT_MSG, lr = True, head = DEFAULT_HEAD):
         it = QListWidgetItem(self)
         wid = self.size().width()
-        item = TextItem(it,self,sz,lr) #增加必须指定本list和本item用于删除item
+        item = TextItem(it,self,sz,lr,head) #增加必须指定本list和本item用于删除item
         # item.setEnabled(False) #对象灰度显示，不能导致ITEM不可选
         it.setSizeHint(item.sizeHint())
         it.setFlags(Qt.ItemIsEnabled)# 设置Item不可选择
@@ -397,7 +397,7 @@ class MsgList(QListWidget):
     def addImageMsg(self,img = DEFAULT_IMG, lr = True, head = DEFAULT_HEAD):
         it = QListWidgetItem(self)
         wid = self.size().width()
-        item = ImageItem(it,self,img,lr) #增加必须指定本list和本item用于删除item
+        item = ImageItem(it,self,img,lr,head) #增加必须指定本list和本item用于删除item
         # item.setEnabled(False) #对象灰度显示，不能导致ITEM不可选
         it.setSizeHint(item.sizeHint())
         it.setFlags(Qt.ItemIsEnabled)# 设置Item不可选择

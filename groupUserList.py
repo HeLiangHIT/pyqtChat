@@ -231,6 +231,9 @@ class UserListItem(QListWidgetItem):
     def getId(self):
         return self._id
 
+    def getId(self):
+        return self._id
+
     def setGroup(self,group):
         self._group = unicode(group)
         self.setText(self._group + '_' + self.getNameInput())#同步更新一下
@@ -562,7 +565,6 @@ class GroupUserList(QListWidget):
     def dropEvent(self, e):#放入事件
         # print e.pos()
         e.accept()
-
 
 
 if __name__=='__main__':
