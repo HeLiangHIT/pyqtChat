@@ -28,3 +28,7 @@
 
 1. 聊天后台和功能实现。
 
+
+
+项目地址：https://github.com/HeLiangHIT/pyqtChat
+博客地址：http://blog.csdn.net/u010151698/article/details/53585124
